@@ -1,0 +1,9 @@
+# Automatically handle line endings
+* text=auto
+
+# Force LF line endings for specific files
+*.js text eol=lf
+*.json text eol=lf
+*.css text eol=lf
+*.html text eol=lf
+*.md text eol=lf
