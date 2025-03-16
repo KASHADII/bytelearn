@@ -1,0 +1,170 @@
+/* Reduce Chart Size */
+canvas {
+    max-width: 100%;
+    height: 250px !important; /* Adjust height */
+}
+
+/* Ensure Charts Fit Responsively */
+@media (max-width: 768px) {
+    canvas {
+        height: 200px !important; /* Smaller on mobile */
+    }
+}
+
+/* Center Modal */
+.modal {
+    display: none; /* Hide by default */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+}
+
+/* Overlay to Dim Background */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+/* Menu Button (Three Lines) */
+#menu-toggle {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+/* Sidebar (Hidden by Default) */
+#sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px; /* Initially hidden */
+    width: 250px;
+    height: 100%;
+    background: #222;
+    color: white;
+    transition: 0.3s ease-in-out;
+    padding-top: 60px;
+    z-index: 1000;
+}
+
+/* Sidebar Active (Visible) */
+#sidebar.active {
+    left: 0;
+}
+
+/* Sidebar Menu Items */
+#sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+#sidebar ul li {
+    padding: 15px;
+    text-align: center;
+}
+
+#sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    display: block;
+}
+
+#sidebar ul li:hover {
+    background: #444;
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+}
+
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #007bff;
+    color: white;
+}
+
+.menu-icon {
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.user-profile {
+    position: relative;
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background: white;
+    color: black;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    border-radius: 5px;
+}
+
+.user-profile:hover .dropdown-content {
+    display: block;
+}
+
+.sidebar {
+    width: 250px;
+    background: #333;
+    color: white;
+    padding: 20px;
+    position: fixed;
+    top: 0;
+    left: -250px;
+    height: 100vh;
+    transition: 0.3s;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    padding: 8px 0;
+}
+
+.sidebar.active {
+    left: 0;
+}
+
+main {
+    margin-left: 20px;
+    padding: 20px;
+}
+
+section {
+    background: white;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
