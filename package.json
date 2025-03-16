@@ -8,12 +8,12 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "devDependencies": {
     "tailwindcss": "^4.0.14"
   },
   "dependencies": {
     "@tailwindcss/cli": "^4.0.14",
     "firebase": "^11.4.0"
-  }
+  },
+  "description": ""
 }
