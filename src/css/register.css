@@ -24,28 +24,62 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  align-items: center;
-  gap: 20px
+  
+  
 }
-button:hover {
-  background-color: #6366f1; /* Darker Blue on Hover */
-  transform: translateY(-3px); /* Slight lift */
+.btn:hover {
+  background-color: #6366f1;
+  transform: translateY(-3px); 
   box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
 }
 
-button:active {
-  transform: scale(0.98); /* Subtle click effect */
+.btn:active {
+  transform: scale(0.98); 
 }
-button {
+.btn {
   background-color: #06b6d4;
   color: #f9fafb;
-  padding: 12px 24px;
+  padding: 6px 22px;
   border: none;
   border-radius: 12px;
-  font-size: 1rem;
+  font-size: 2rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
   box-shadow: 0 4px 10px rgba(59, 130, 246, 0.2);
+  font-family: 'Monteserrat' , sans-serif;
+}
+
+label{
+  text-align: left;
+  font-size: 1.2rem;
+}
+
+.container h1{
+  text-align: center;
+}
+
+input {
+  width: 100%;
+  padding: 6px 12px;
+  margin-bottom: 20px;
+  background-color: rgba(255, 255, 255, 0.1); 
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  color: white;
+  font-size: 16px;
+  font-family: inherit;
+  transition: all 0.3s ease-in-out;
+}
+
+input::placeholder {
+  color: rgba(255, 255, 255, 0.6); 
+}
+
+input:focus {
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
