@@ -38,14 +38,21 @@ main h1{
 }
 
 .register{
-    padding: 0.6rem 2rem ;
-    border-radius: 15px;
-    margin-left: 40px ;
+    background-color: #06B6D4; 
+    color: #F9FAFB;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.2);
     
 }
 
 .getting_started{
-    margin-left: 90px;
+    margin-left: 100px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -58,5 +65,15 @@ main h1{
     padding-right: 70px;
 }
 
+
+.register:hover {
+    background-color: #6366F1; /* Darker Blue on Hover */
+    transform: translateY(-3px); /* Slight lift */
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+  }
+  
+.register:active {
+    transform: scale(0.98); /* Subtle click effect */
+  }
   
 
