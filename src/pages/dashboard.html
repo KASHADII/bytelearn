@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Dashboard</title>
+</head>
+<body>
+
+    <!-- Modal for Year and Department Selection -->
+    <div class="modal" id="setup-modal">
+        <div class="modal-content">
+            <h2>Set Up Your Profile</h2>
+            <form id="setup-form">
+                <label for="year">Year of Study:</label>
+                <select id="year">
+                    <option value="1">1st Year</option>
+                    <option value="2">2nd Year</option>
+                    <option value="3">3rd Year</option>
+                    <option value="4">4th Year</option>
+                </select>
+
+                <label for="department">Department:</label>
+                <select id="department">
+                    <option value="CSE">Computer Science</option>
+                    <option value="ECE">Electronics</option>
+                    <option value="ME">Mechanical</option>
+                    <option value="CE">Civil</option>
+                </select>
+
+                <button type="submit">Done</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div id="menu-toggle">☰</div> <!-- Only one menu button -->
+        <h1>Dashboard</h1>
+        <div class="user-profile">
+            <span id="user-name">John Doe</span>
+            <div class="dropdown">
+                <div class="dropdown-content">
+                    <a href="account.html">Account Settings</a>
+                    <a href="#">Logout</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <ul>
+            <li><a href="#">Dashboard</a></li>
+            <li><a href="#">Subjects</a></li>
+            <li><a href="#">Daily Tests</a></li>
+            <li><a href="#">Performance</a></li>
+            <li><a href="#">Rewards</a></li>
+            <li><a href="#">Settings</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Dashboard Content -->
+    <main>
+        <section class="content-recommendations">
+            <h2>Content Recommendations</h2>
+            <p>Suggested study materials based on your learning progress.</p>
+        </section>
+
+        <section class="performance-analytics">
+            <h2>Performance Analytics</h2>
+            <canvas id="performanceChart"></canvas>
+        </section>
+
+        <section class="daily-tests">
+            <h2>Daily Test</h2>
+            <canvas id="testChart"></canvas>
+        </section>
+
+        <section class="gamification">
+            <h2>Gamification & Rewards</h2>
+            <p><b>Total Points Earned:</b> <span id="points">420</span> 🏆</p>
+        </section>
+
+        <section class="personal-analysis">
+            <h2>Analysis & Improvement</h2>
+            <p><b>Weak Area:</b> Creativity ❌</p>
+            <p>Suggested Activity: Solve puzzles and visualization exercises.</p>
+        </section>
+    </main>
+
+    <script src="../js/dashboard.js"></script>
+</body>
+</html>
