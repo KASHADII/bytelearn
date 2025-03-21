@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ByteLearn Dashboard</title>
+    <link rel="stylesheet" href="css_dash/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <main id="content">
+            <!-- Content will be loaded here dynamically -->
+        </main>
+
+        <nav class="bottom-nav">
+            <a href="#" class="nav-item active" data-page="recommended">
+                <i class="fas fa-star"></i>
+                <span>Recommended</span>
+            </a>
+            <a href="#" class="nav-item" data-page="subjects">
+                <i class="fas fa-book"></i>
+                <span>Subjects</span>
+            </a>
+            <a href="#" class="nav-item" data-page="tests">
+                <i class="fas fa-clipboard-list"></i>
+                <span>Tests</span>
+            </a>
+            <a href="#" class="nav-item" data-page="leaderboard">
+                <i class="fas fa-trophy"></i>
+                <span>Leaderboard</span>
+            </a>
+            <a href="#" class="nav-item" data-page="profile">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+        </nav>
+    </div>
+    <script src="js_dash/main.js"></script>
+</body>
+</html>
