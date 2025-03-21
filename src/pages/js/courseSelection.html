@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Selection</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555;
+            font-weight: 500;
+        }
+
+        select, .radio-group {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            background-color: white;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            padding: 0.5rem 0;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        button {
+            width: 100%;
+            padding: 1rem;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1.5rem;
+            }
+
+            .radio-group {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Course Selection</h1>
+        <form id="courseForm">
+            <div class="form-group">
+                <label for="course">Select Course:</label>
+                <select id="course" name="course" required>
+                    <option value="">Choose a course...</option>
+                    <option value="ai-ml">Artificial Intelligence & Machine Learning</option>
+                    <option value="big-data">Big Data Analytics</option>
+                    <option value="data-science">Data Science</option>
+                    <option value="cloud-computing">Cloud Computing</option>
+                    <option value="cybersecurity">Cybersecurity</option>
+                    <option value="blockchain">Blockchain Technology</option>
+                    <option value="iot">Internet of Things (IoT)</option>
+                    <option value="web-dev">Web Development</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Select Year:</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="year1" name="year" value="1" required>
+                        <label for="year1">1st Year</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="year2" name="year" value="2">
+                        <label for="year2">2nd Year</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="year3" name="year" value="3">
+                        <label for="year3">3rd Year</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="year4" name="year" value="4">
+                        <label for="year4">4th Year</label>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('courseForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const course = document.getElementById('course').value;
+            const year = document.querySelector('input[name="year"]:checked').value;
+            alert(`Selected Course: ${course}\nSelected Year: ${year}`);
+            // Here you can add your form submission logic
+        });
+    </script>
+</body>
+</html>
