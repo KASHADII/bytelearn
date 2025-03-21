@@ -142,13 +142,67 @@
         </form>
     </div>
 
-    <script>
+    <script type="module">
+        // Import Firebase modules
+        // Import Firebase modules
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+
+// Your Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyBt61pcHhekWIm_oFHpoV6NwyhSnpv31WE",
+    authDomain: "studymate-840b9.firebaseapp.com",
+    projectId: "studymate-840b9",
+    storageBucket: "studymate-840b9.appspot.com",
+    messagingSenderId: "834548842182",
+    appId: "1:834548842182:web:b51789d325b15c4466a1c7",
+    databaseURL: "https://studymate-840b9-default-rtdb.asia-southeast1.firebasedatabase.app"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+const auth = getAuth(app);
+
+        console.log("Firebase App Initialized:", app);
+          console.log("Database Instance:", database);
+        console.log("Auth Instance:", auth);
+
         document.getElementById('courseForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            console.log("Form submitted event triggered!");
+            
+            // Get current user
+            const user = auth.currentUser;
+            
+            if (!user) {
+                alert('Please login first');
+                window.location.href = 'login.html';
+                return;
+            }
+
             const course = document.getElementById('course').value;
             const year = document.querySelector('input[name="year"]:checked').value;
-            alert(`Selected Course: ${course}\nSelected Year: ${year}`);
-            // Here you can add your form submission logic
+
+            // Create a data object
+            const courseData = {
+                userId: user.uid,
+                course: course,
+                year: year,
+                timestamp: Date.now()
+            };
+
+            // Save to Firebase Realtime Database
+            const courseSelectionsRef = ref(database, 'courseSelections');
+            push(courseSelectionsRef, courseData)
+                .then(() => {
+                    alert('Course selection saved successfully!');
+                    window.location.href = 'dashboard.html';
+                })
+                .catch((error) => {
+                    alert('Error saving course selection: ' + error.message);
+                });
         });
     </script>
 </body>
