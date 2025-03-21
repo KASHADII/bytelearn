@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("setup-form").addEventListener("submit", (event) => {
         event.preventDefault();
         localStorage.setItem("userSetupComplete", "true");
-        modal.style.display = "none";
+        modal.style.displaby = "none";
     });
 
     // Responsive Chart Settings
