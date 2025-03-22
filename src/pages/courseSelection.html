@@ -1,209 +1,372 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Course Selection</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Course Selection</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
-        body {
-            background-color: #f5f5f5;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
+    body {
+      background-color: #f5f5f5;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
 
-        .container {
-            background-color: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 500px;
-        }
+    .container {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+    }
 
-        h1 {
-            color: #333;
-            margin-bottom: 2rem;
-            text-align: center;
-        }
+    h1 {
+      color: #333;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
 
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
 
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #555;
-            font-weight: 500;
-        }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #555;
+      font-weight: 500;
+    }
 
-        select, .radio-group {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-            background-color: white;
-        }
+    select, .radio-group {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 1rem;
+      background-color: white;
+    }
 
-        .radio-group {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            padding: 0.5rem 0;
-        }
+    .radio-group {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      padding: 0.5rem 0;
+    }
 
-        .radio-option {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
 
-        button {
-            width: 100%;
-            padding: 1rem;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
+    .subjects-section {
+      display: none;
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid #ddd;
+    }
 
-        button:hover {
-            background-color: #45a049;
-        }
+    .subjects-section.visible {
+      display: block;
+    }
 
-        @media (max-width: 480px) {
-            .container {
-                padding: 1.5rem;
-            }
+    .subject-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
 
-            .radio-group {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-        }
-    </style>
+    .subject-checkbox input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+    }
+
+    .subject-checkbox label {
+      margin-bottom: 0;
+    }
+
+    button {
+      width: 100%;
+      padding: 1rem;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+
+    .loading {
+      text-align: center;
+      color: #666;
+      margin: 1rem 0;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 1.5rem;
+      }
+
+      .radio-group {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+    }
+
+    .custom-subject {
+      display: flex;
+      gap: 10px;
+      margin-top: 1rem;
+    }
+
+    .custom-subject input {
+      flex: 1;
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .custom-subject button {
+      width: auto;
+      padding: 0.5rem 1rem;
+    }
+
+    .error-message {
+      color: #dc3545;
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Course Selection</h1>
-        <form id="courseForm">
-            <div class="form-group">
-                <label for="course">Select Course:</label>
-                <select id="course" name="course" required>
-                    <option value="">Choose a course...</option>
-                    <option value="ai-ml">Artificial Intelligence & Machine Learning</option>
-                    <option value="big-data">Big Data Analytics</option>
-                    <option value="data-science">Data Science</option>
-                    <option value="cloud-computing">Cloud Computing</option>
-                    <option value="cybersecurity">Cybersecurity</option>
-                    <option value="blockchain">Blockchain Technology</option>
-                    <option value="iot">Internet of Things (IoT)</option>
-                    <option value="web-dev">Web Development</option>
-                </select>
-            </div>
+  <div class="container">
+    <h1>Course Selection</h1>
+    <form id="courseForm">
+      <div class="form-group">
+        <label for="course">Select Course:</label>
+        <select id="course" name="course" required>
+          <option value="">Choose a course...</option>
+          <option value="ai-ml">Artificial Intelligence & Machine Learning</option>
+          <option value="big-data">Big Data Analytics</option>
+          <option value="data-science">Data Science</option>
+          <option value="cloud-computing">Cloud Computing</option>
+          <option value="cybersecurity">Cybersecurity</option>
+          <option value="blockchain">Blockchain Technology</option>
+          <option value="iot">Internet of Things (IoT)</option>
+          <option value="web-dev">Web Development</option>
+        </select>
+      </div>
 
-            <div class="form-group">
-                <label>Select Year:</label>
-                <div class="radio-group">
-                    <div class="radio-option">
-                        <input type="radio" id="year1" name="year" value="1" required>
-                        <label for="year1">1st Year</label>
-                    </div>
-                    <div class="radio-option">
-                        <input type="radio" id="year2" name="year" value="2">
-                        <label for="year2">2nd Year</label>
-                    </div>
-                    <div class="radio-option">
-                        <input type="radio" id="year3" name="year" value="3">
-                        <label for="year3">3rd Year</label>
-                    </div>
-                    <div class="radio-option">
-                        <input type="radio" id="year4" name="year" value="4">
-                        <label for="year4">4th Year</label>
-                    </div>
-                </div>
-            </div>
+      <div class="form-group">
+        <label>Select Year:</label>
+        <div class="radio-group">
+          <div class="radio-option"><input type="radio" id="year1" name="year" value="1" required><label for="year1">1st Year</label></div>
+          <div class="radio-option"><input type="radio" id="year2" name="year" value="2"><label for="year2">2nd Year</label></div>
+          <div class="radio-option"><input type="radio" id="year3" name="year" value="3"><label for="year3">3rd Year</label></div>
+          <div class="radio-option"><input type="radio" id="year4" name="year" value="4"><label for="year4">4th Year</label></div>
+        </div>
+      </div>
 
-            <button type="submit">Submit</button>
-        </form>
+      <button type="submit" id="submitBtn">Submit</button>
+    </form>
+
+    <div class="subjects-section" id="subjectsSection">
+      <h2>Select Your Subjects</h2>
+      <div class="loading" id="loadingSubjects">Loading subjects...</div>
+      <div id="subjectsList"></div>
+
+      <div class="custom-subject">
+        <input type="text" id="customSubject" placeholder="Add custom subject">
+        <button type="button" id="addCustomSubject">Add</button>
+      </div>
+      <div id="customSubjectError" class="error-message"></div>
+
+      <button type="button" id="confirmSubjects" disabled>Confirm Selection</button>
     </div>
+  </div>
 
-    <script type="module">
-        // Import Firebase modules
-        // Import Firebase modules
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
-import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+    import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
 
-// Your Firebase configuration
-const firebaseConfig = {
-    apiKey: "AIzaSyBt61pcHhekWIm_oFHpoV6NwyhSnpv31WE",
-    authDomain: "studymate-840b9.firebaseapp.com",
-    projectId: "studymate-840b9",
-    storageBucket: "studymate-840b9.appspot.com",
-    messagingSenderId: "834548842182",
-    appId: "1:834548842182:web:b51789d325b15c4466a1c7",
-    databaseURL: "https://studymate-840b9-default-rtdb.asia-southeast1.firebasedatabase.app"
-};
+    const firebaseConfig = {
+      apiKey: "AIzaSyBt61pcHhekWIm_oFHpoV6NwyhSnpv31WE",
+      authDomain: "studymate-840b9.firebaseapp.com",
+      projectId: "studymate-840b9",
+      storageBucket: "studymate-840b9.appspot.com",
+      messagingSenderId: "834548842182",
+      appId: "1:834548842182:web:b51789d325b15c4466a1c7",
+      databaseURL: "https://studymate-840b9-default-rtdb.asia-southeast1.firebasedatabase.app"
+    };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
-const auth = getAuth(app);
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+    const auth = getAuth(app);
 
-        console.log("Firebase App Initialized:", app);
-          console.log("Database Instance:", database);
-        console.log("Auth Instance:", auth);
+    const CHATGPT_API_KEY = "YOUR-CHATGPT-API-KEY"; // Replace with your real key
+    const CHATGPT_API_URL = "https://api.openai.com/v1/chat/completions";
 
-        document.getElementById('courseForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            console.log("Form submitted event triggered!");
-            
-            // Get current user
-            const user = auth.currentUser;
-            
-            if (!user) {
-                alert('Please login first');
-                window.location.href = 'login.html';
-                return;
-            }
+    async function generateSubjectsWithChatGPT(course, year) {
+      try {
+        const courseName = document.getElementById('course').options[document.getElementById('course').selectedIndex].text;
+        const prompt = `Generate 5 relevant subjects for a ${year} year student studying ${courseName}. Return only a JSON array of subject names.`;
 
-            const course = document.getElementById('course').value;
-            const year = document.querySelector('input[name="year"]:checked').value;
-
-            // Create a data object
-            const courseData = {
-                userId: user.uid,
-                course: course,
-                year: year,
-                timestamp: Date.now()
-            };
-
-            // Save to Firebase Realtime Database
-            const courseSelectionsRef = ref(database, 'courseSelections');
-            push(courseSelectionsRef, courseData)
-                .then(() => {
-                    alert('Course selection saved successfully!');
-                    window.location.href = 'dashboard/index_dash.html';
-                })
-                .catch((error) => {
-                    alert('Error saving course selection: ' + error.message);
-                });
+        const response = await fetch(CHATGPT_API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${CHATGPT_API_KEY}`
+          },
+          body: JSON.stringify({
+            model: "gpt-3.5-turbo",
+            messages: [
+              { role: "system", content: "You are a helpful assistant that returns only JSON array of 5 subjects." },
+              { role: "user", content: prompt }
+            ],
+            temperature: 0.7
+          })
         });
-    </script>
+
+        const data = await response.json();
+        const content = data.choices[0].message.content;
+        const subjects = JSON.parse(content);
+        return subjects;
+      } catch (err) {
+        console.warn("Using dummy data due to error:", err.message);
+        return getDummySubjects(course);
+      }
+    }
+
+    function getDummySubjects(course) {
+      const dummySubjects = {
+        'ai-ml': ['Mathematics for AI', 'Deep Learning', 'Neural Networks', 'Computer Vision', 'NLP'],
+        'big-data': ['Big Data Analytics', 'Hadoop', 'Spark', 'Data Warehousing', 'Data Mining'],
+        'data-science': ['Statistics', 'Python', 'Machine Learning', 'Data Viz', 'SQL'],
+        'cloud-computing': ['AWS Basics', 'Azure', 'Cloud Architecture', 'DevOps', 'Containers'],
+        'cybersecurity': ['Network Security', 'Cryptography', 'Ethical Hacking', 'Security Protocols', 'Risk Mgmt'],
+        'blockchain': ['Blockchain Basics', 'Smart Contracts', 'Crypto', 'DApps', 'Blockchain Security'],
+        'iot': ['IoT Architecture', 'Embedded Systems', 'Sensors', 'IoT Security', 'Edge Computing'],
+        'web-dev': ['HTML/CSS', 'JavaScript', 'React', 'Node.js', 'Databases']
+      };
+      return dummySubjects[course] || ['Subject 1', 'Subject 2', 'Subject 3'];
+    }
+
+    function createSubjectCheckboxes(subjects) {
+      const list = document.getElementById('subjectsList');
+      list.innerHTML = '';
+      subjects.forEach(subject => {
+        const id = subject.toLowerCase().replace(/\s+/g, '-');
+        const div = document.createElement('div');
+        div.className = 'subject-checkbox';
+        div.innerHTML = `<input type="checkbox" id="${id}" value="${subject}"><label for="${id}">${subject}</label>`;
+        list.appendChild(div);
+      });
+
+      document.getElementById('subjectsSection').classList.add('visible');
+      document.getElementById('loadingSubjects').style.display = 'none';
+      addCheckboxListeners();
+    }
+
+    function addCheckboxListeners() {
+      const checkboxes = document.querySelectorAll('#subjectsList input[type="checkbox"]');
+      checkboxes.forEach(cb => cb.addEventListener('change', updateConfirmButton));
+    }
+
+    function updateConfirmButton() {
+      const checked = document.querySelectorAll('#subjectsList input[type="checkbox"]:checked');
+      document.getElementById('confirmSubjects').disabled = checked.length === 0;
+    }
+
+    document.getElementById('courseForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      document.getElementById('loadingSubjects').style.display = 'block';
+      document.getElementById('subjectsList').innerHTML = '';
+      document.getElementById('confirmSubjects').disabled = true;
+
+      const course = document.getElementById('course').value;
+      const year = document.querySelector('input[name="year"]:checked')?.value;
+
+      if (!course || !year) return;
+
+      const subjects = await generateSubjectsWithChatGPT(course, year);
+      createSubjectCheckboxes(subjects);
+    });
+
+    document.getElementById('addCustomSubject').addEventListener('click', () => {
+      const input = document.getElementById('customSubject');
+      const subject = input.value.trim();
+      const error = document.getElementById('customSubjectError');
+
+      if (!subject) {
+        error.textContent = 'Please enter a subject.';
+        return;
+      }
+
+      const id = subject.toLowerCase().replace(/\s+/g, '-');
+      if (document.getElementById(id)) {
+        error.textContent = 'Subject already exists.';
+        return;
+      }
+
+      error.textContent = '';
+      const div = document.createElement('div');
+      div.className = 'subject-checkbox';
+      div.innerHTML = `<input type="checkbox" id="${id}" value="${subject}" checked><label for="${id}">${subject}</label>`;
+      document.getElementById('subjectsList').appendChild(div);
+      input.value = '';
+      updateConfirmButton();
+    });
+
+    document.getElementById('confirmSubjects').addEventListener('click', () => {
+      const selected = [...document.querySelectorAll('#subjectsList input[type="checkbox"]:checked')].map(cb => cb.value);
+      const course = document.getElementById('course').value;
+      const year = document.querySelector('input[name="year"]:checked')?.value;
+
+      onAuthStateChanged(auth, user => {
+        if (user) {
+          const userId = user.uid;
+          const userRef = ref(database, `users/${userId}/subjects`);
+          const data = {
+            course,
+            year,
+            selectedSubjects: selected
+          };
+          push(userRef, data)
+            .then(() => {
+              alert('Subjects saved successfully!');
+              location.href = "dashboard.html"; // redirect after save
+            })
+            .catch(error => {
+              console.error("Error saving subjects:", error);
+              alert("Failed to save subjects.");
+            });
+        } else {
+          alert("You are not logged in.");
+        }
+      });
+    });
+  </script>
 </body>
 </html>
