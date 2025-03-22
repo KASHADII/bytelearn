@@ -6,9 +6,52 @@
     <title>ByteLearn Dashboard</title>
     <link rel="stylesheet" href="css_dash/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .notification-icon {
+            position: relative;
+            cursor: pointer;
+            margin-right: 20px;
+            background: white;
+            padding: 10px;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .notification-icon i {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .notification-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #ff4444;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
+            min-width: 18px;
+            text-align: center;
+        }
+
+        /* Add this if you want the icon to be in the header/navbar */
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
+        <div class="header-right" style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
+            <div class="notification-icon" id="notificationIcon">
+                <i class="fas fa-bell"></i>
+                <span class="notification-count" id="notificationCount">0</span>
+            </div>
+        </div>
+
         <main id="content">
             <!-- Content will be loaded here dynamically -->
         </main>
@@ -37,5 +80,56 @@
         </nav>
     </div>
     <script src="js_dash/main.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBt61pcHhekWIm_oFHpoV6NwyhSnpv31WE",
+            authDomain: "studymate-840b9.firebaseapp.com",
+            projectId: "studymate-840b9",
+            storageBucket: "studymate-840b9.appspot.com",
+            messagingSenderId: "834548842182",
+            appId: "1:834548842182:web:b51789d325b15c4466a1c7",
+            databaseURL: "https://studymate-840b9-default-rtdb.asia-southeast1.firebasedatabase.app"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const auth = getAuth(app);
+
+        // Get notification icon elements
+        const notificationIcon = document.getElementById('notificationIcon');
+        const notificationCount = document.getElementById('notificationCount');
+
+        // Add click event to notification icon
+        notificationIcon.addEventListener('click', () => {
+            window.location.href = '../notifications.html';
+        });
+
+        // Listen for auth state changes
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Listen for notifications
+                const notificationsRef = ref(database, `users/${user.uid}/notifications`);
+                onValue(notificationsRef, (snapshot) => {
+                    const notifications = snapshot.val();
+                    if (notifications) {
+                        // Count only unread notifications
+                        const unreadCount = Object.values(notifications)
+                            .filter(notification => !notification.read).length;
+                        
+                        // Update notification count
+                        notificationCount.textContent = unreadCount;
+                        notificationCount.style.display = unreadCount > 0 ? 'block' : 'none';
+                    } else {
+                        notificationCount.style.display = 'none';
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>

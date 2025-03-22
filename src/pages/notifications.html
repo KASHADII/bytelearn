@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications - StudyMate</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #333;
+            cursor: pointer;
+            padding: 10px;
+            z-index: 1000;
+        }
+
+        .close-button:hover {
+            color: #ff4444;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+            padding-right: 40px; /* Make space for close button */
+        }
+
+        .notification-list {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .notification-item {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            cursor: pointer;
+        }
+
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .notification-message {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .notification-time {
+            color: #999;
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+
+        .unread {
+            background-color: #f0f7ff;
+        }
+
+        .no-notifications {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+
+        .notification-dot {
+            width: 10px;
+            height: 10px;
+            background-color: #4CAF50;
+            border-radius: 50%;
+            margin-top: 5px;
+        }
+
+        .read .notification-dot {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button class="close-button" onclick="window.location.href='dashboard/index_dash.html'">
+            <i class="fas fa-times"></i>
+        </button>
+        <h1>Notifications</h1>
+        <div class="notification-list" id="notificationList"></div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+        import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBt61pcHhekWIm_oFHpoV6NwyhSnpv31WE",
+            authDomain: "studymate-840b9.firebaseapp.com",
+            projectId: "studymate-840b9",
+            storageBucket: "studymate-840b9.appspot.com",
+            messagingSenderId: "834548842182",
+            appId: "1:834548842182:web:b51789d325b15c4466a1c7",
+            databaseURL: "https://studymate-840b9-default-rtdb.asia-southeast1.firebasedatabase.app"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const auth = getAuth(app);
+
+        function formatTime(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleString();
+        }
+
+        function markAsRead(notificationId, userId) {
+            const notificationRef = ref(database, `users/${userId}/notifications/${notificationId}`);
+            update(notificationRef, {
+                read: true
+            });
+        }
+
+        function displayNotifications(notifications, userId) {
+            const notificationList = document.getElementById('notificationList');
+            
+            if (!notifications) {
+                notificationList.innerHTML = '<div class="no-notifications">No notifications yet</div>';
+                return;
+            }
+
+            const notificationsArray = Object.entries(notifications);
+            
+            if (notificationsArray.length === 0) {
+                notificationList.innerHTML = '<div class="no-notifications">No notifications yet</div>';
+                return;
+            }
+
+            notificationList.innerHTML = '';
+            
+            // Sort notifications by timestamp (newest first)
+            notificationsArray
+                .sort(([,a], [,b]) => b.timestamp - a.timestamp)
+                .forEach(([notificationId, notification]) => {
+                    const div = document.createElement('div');
+                    div.className = `notification-item ${notification.read ? 'read' : 'unread'}`;
+                    div.innerHTML = `
+                        <div class="notification-dot"></div>
+                        <div class="notification-content">
+                            <div class="notification-title">${notification.title}</div>
+                            <div class="notification-message">${notification.message}</div>
+                            <div class="notification-time">${formatTime(notification.timestamp)}</div>
+                        </div>
+                    `;
+
+                    // Mark notification as read when clicked
+                    div.addEventListener('click', () => {
+                        if (!notification.read) {
+                            markAsRead(notificationId, userId);
+                            div.classList.remove('unread');
+                            div.classList.add('read');
+                        }
+                    });
+
+                    notificationList.appendChild(div);
+                });
+        }
+
+        // Listen for auth state changes
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Listen for notifications
+                const notificationsRef = ref(database, `users/${user.uid}/notifications`);
+                onValue(notificationsRef, (snapshot) => {
+                    const notifications = snapshot.val();
+                    displayNotifications(notifications, user.uid);
+                });
+            } else {
+                window.location.href = 'login.html';
+            }
+        });
+    </script>
+</body>
+</html> 

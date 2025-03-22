@@ -342,6 +342,7 @@
     document.getElementById('confirmSubjects').addEventListener('click', () => {
       const selected = [...document.querySelectorAll('#subjectsList input[type="checkbox"]:checked')].map(cb => cb.value);
       const course = document.getElementById('course').value;
+      const courseName = document.getElementById('course').options[document.getElementById('course').selectedIndex].text;
       const year = document.querySelector('input[name="year"]:checked')?.value;
 
       onAuthStateChanged(auth, user => {
@@ -353,14 +354,35 @@
             year,
             selectedSubjects: selected
           };
+          
           push(userRef, data)
             .then(() => {
-              alert('Subjects saved successfully!');
-              location.href = "dashboard/index_dash.html"; // redirect after save
+              const notificationsRef = ref(database, `users/${userId}/notifications`);
+              return push(notificationsRef, {
+                title: "Course Enrollment Successful",
+                message: `Welcome! You have successfully enrolled in ${courseName} for Year ${year}. Your selected subjects: ${selected.join(", ")}`,
+                timestamp: Date.now(),
+                read: false,
+                type: "enrollment"
+              });
+            })
+            .then(() => {
+              const notificationsRef = ref(database, `users/${userId}/notifications`);
+              return push(notificationsRef, {
+                title: "Subjects Added",
+                message: `Your subjects have been added to your profile. You can start learning these subjects: ${selected.join(", ")}`,
+                timestamp: Date.now(),
+                read: false,
+                type: "subjects"
+              });
+            })
+            .then(() => {
+              alert('Course and subjects saved successfully!');
+              location.href = "dashboard/index_dash.html";
             })
             .catch(error => {
-              console.error("Error saving subjects:", error);
-              alert("Failed to save subjects.");
+              console.error("Error:", error);
+              alert("Failed to save data.");
             });
         } else {
           alert("You are not logged in.");
